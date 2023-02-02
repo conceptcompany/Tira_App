@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="25.393" height="24.668" viewBox="0 0 25.393 24.668">
+  <g id="Filter" transform="translate(-14 -15)">
+    <path id="Rectangle" d="M18.814,15a1.814,1.814,0,0,1,1.814,1.814v21.04a1.814,1.814,0,0,1-3.628,0V16.814A1.814,1.814,0,0,1,18.814,15Z" transform="translate(-0.823 0)" fill-rule="evenodd"/>
+    <path id="Rectangle-2" data-name="Rectangle" d="M30.814,15a1.814,1.814,0,0,1,1.814,1.814v21.04a1.814,1.814,0,0,1-3.628,0V16.814A1.814,1.814,0,0,1,30.814,15Z" transform="translate(-4.117 0)" fill-rule="evenodd"/>
+    <path id="Rectangle-3" data-name="Rectangle" d="M42.814,15a1.814,1.814,0,0,1,1.814,1.814v21.04a1.814,1.814,0,0,1-3.628,0V16.814A1.814,1.814,0,0,1,42.814,15Z" transform="translate(-7.411 0)" fill-rule="evenodd"/>
+    <path id="Rectangle-4" data-name="Rectangle" d="M15.814,39h4.353a1.814,1.814,0,0,1,0,3.628H15.814a1.814,1.814,0,1,1,0-3.628Z" transform="translate(0 -6.587)" fill-rule="evenodd"/>
+    <path id="Rectangle-5" data-name="Rectangle" d="M27.814,30h4.353a1.814,1.814,0,0,1,0,3.628H27.814a1.814,1.814,0,1,1,0-3.628Z" transform="translate(-3.294 -4.117)" fill-rule="evenodd"/>
+    <path id="Rectangle-6" data-name="Rectangle" d="M39.814,22h4.353a1.814,1.814,0,0,1,0,3.628H39.814a1.814,1.814,0,0,1,0-3.628Z" transform="translate(-6.587 -1.921)" fill-rule="evenodd"/>
+  </g>
+</svg>
