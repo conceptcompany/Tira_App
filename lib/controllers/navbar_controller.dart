@@ -4,11 +4,12 @@ import 'package:tira_app/core/resources/color_manager.dart';
 import 'package:tira_app/core/resources/strings_manager.dart';
 
 import '../screens/navbar_pages/home/home.dart';
-import '../screens/navbar_pages/myorders/persentation/binding/my_orders_bindings.dart';
+import '../screens/navbar_pages/myorders/binding/my_orders_bindings.dart';
 import '../screens/navbar_pages/myorders/persentation/view/my_orders.dart';
 import '../screens/navbar_pages/notification/notifications.dart';
 import '../screens/navbar_pages/reports/bindings/my_orders_binding.dart';
 import '../screens/navbar_pages/reports/persenation/view/reports.dart';
+import '../screens/navbar_pages/services/bindings/all_services_bindings.dart';
 import '../screens/navbar_pages/services/persentation/view/services.dart';
 
 class NavBarController extends GetxController {
@@ -95,13 +96,13 @@ class NavBarController extends GetxController {
             );
       case '/ServiceScreen':
         return GetPageRoute(
-          settings: settings,
-          transition: Transition.leftToRight,
-          transitionDuration: const Duration(milliseconds: 100),
-          page: () => const ServiceScreen(),
-          // binding: FavoriteBinding()
-          // binding: SettingsBinding(),
-        );
+            settings: settings,
+            transition: Transition.leftToRight,
+            transitionDuration: const Duration(milliseconds: 100),
+            page: () => const ServiceScreen(),
+            binding: AllServicesBinding()
+            // binding: SettingsBinding(),
+            );
       case '/MyOrders':
         return GetPageRoute(
             settings: settings,
@@ -127,5 +128,4 @@ class NavBarController extends GetxController {
     '/ServiceScreen',
     '/MyOrders',
   ];
-
 }

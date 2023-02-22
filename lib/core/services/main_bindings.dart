@@ -29,8 +29,10 @@ class MainBinding extends Bindings {
       ImagePickerImpl(),
       permanent: true,
     );
-    Get.lazyPut<NetworkInfo>(
-        () => NetworkInfoImpl(InternetConnectionChecker()));
+    Get.put<NetworkInfo>(
+      NetworkInfoImpl(InternetConnectionChecker()),
+      permanent: true,
+    );
     Get.put<WebServiceConnections>(
       WebServiceConnections(
         Get.find<Dio>(),
@@ -39,5 +41,12 @@ class MainBinding extends Bindings {
       permanent: true,
     );
     Get.lazyPut(() => NavBarController());
+    // Get.lazyPut<BaseServicesDataSource>(
+    //   () => ServicesDataSource(Get.find<WebServiceConnections>()),
+    // );
+    // Get.lazyPut(() => AllServicesController(
+    //       Get.find<NetworkInfo>(),
+    //       Get.find<BaseServicesDataSource>(),
+    //     ));
   }
 }

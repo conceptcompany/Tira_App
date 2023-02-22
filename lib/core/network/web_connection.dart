@@ -56,13 +56,20 @@ class WebServiceConnections {
       }
       log('${response.data}');
       return response;
-    } on dio.DioError catch (e) {
-      if (showLoader) {
-        loader?.hide();
-      }
-      debugPrint(e.toString());
+    } on SocketException catch (e) {
+      throw SocketException(e.toString());
+    } on FormatException catch (_) {
+      throw const FormatException("Unable to process the data");
+    } catch (e) {
       rethrow;
     }
+    // } on dio.DioError catch (e) {
+    //   if (showLoader) {
+    //     loader?.hide();
+    //   }
+    //   debugPrint(e.toString());
+    //   rethrow;
+    // }
   }
 
   Future<dio.Response> postRequest({
@@ -99,14 +106,14 @@ class WebServiceConnections {
         response = await _dioInstance.post(
           '${ApiConstant.baseUrl}$path',
           options:
-          AuthHeader.getBaseOption(jwtToken: AppPreferences().jwtToken),
+              AuthHeader.getBaseOption(jwtToken: AppPreferences().jwtToken),
           data: formData,
         );
       } else {
         response = await _dioInstance.post(
           '${ApiConstant.baseUrl}$path',
           options:
-          AuthHeader.getBaseOption(jwtToken: AppPreferences().jwtToken),
+              AuthHeader.getBaseOption(jwtToken: AppPreferences().jwtToken),
           data: data,
         );
       }
@@ -115,7 +122,7 @@ class WebServiceConnections {
         loader?.hide();
       }
       return response;
-    }on SocketException catch (e) {
+    } on SocketException catch (e) {
       throw SocketException(e.toString());
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");

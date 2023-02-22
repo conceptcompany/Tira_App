@@ -1,88 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:tira_app/widgets/appbar.dart';
-import 'package:tira_app/widgets/button.dart';
-import 'package:tira_app/widgets/container_body.dart';
-import 'package:tira_app/widgets/form_widget.dart';
+import 'package:tira_app/core/resources/color_manager.dart';
 
-import '../../../../../../core/resources/color_manager.dart';
+import '../controller/details_form_controller.dart';
 
-class DetailsForm extends StatelessWidget {
-  const DetailsForm({super.key});
+class ServicesDetailsFormScreen extends GetView<DetailsFormController> {
+  const ServicesDetailsFormScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      physics: const NeverScrollableScrollPhysics(),
-      child: Column(
-        children: [
-          AppBarr(
-            title: 'الصحة  و التعليم',
-            actions: GestureDetector(
-              child: const Icon(Icons.arrow_forward),
-              onTap: () => Get.back(),
-            ),
-            leading: const SizedBox(),
-          ),
-          ContainerBody(
-              widget: Container(
-            margin: const EdgeInsets.all(10),
-            child: ListView(
-              shrinkWrap: true,
-              // mainAxisSize: MainAxisSize.max,
-              // mainAxisAlignment: MainAxisAlignment.start,
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'تسجيل المواليد الجدد لشهر سبتمبر',
-                  style: TextStyle(fontSize: 22.sp),
+        appBar: AppBar(
+          title: Text(controller.form[0]),
+          leading: IconButton(
+              onPressed: () => Get.back(),
+              icon: const Icon(Icons.arrow_back_ios)),
+        ),
+        body: GetBuilder<DetailsFormController>(builder: (logic) {
+          return Column(
+            children: [
+              if (logic.loadingPercentage < 100)
+                LinearProgressIndicator(
+                  value: logic.loadingPercentage / 100.0,
+                  backgroundColor: ColorManager.textColor,
+                  color: ColorManager.mainColor,
                 ),
-                FormWidget(
-                  label: 'اسم الأم',
-                  hint: 'اسم الأم',
-                ),
-                FormWidget(
-                  label: 'مكان الولادة',
-                  hint: 'مكان الولادة',
-                ),
-                FormWidget(label: 'اسم المولود', hint: 'اسم المولود'),
-                FormWidget(label: 'تاريخ الولادة', hint: 'تاريخ الولادة'),
-                FormWidget(
-                  label: 'ملاحظات أخرى',
-                  hint: 'أضف ملاحظات أخرى',
-                  lines: 3,
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  height: 135.h,
-                  decoration: BoxDecoration(
-                      color: ColorManager.white,
-                      border: Border.all(
-                        color: ColorManager.mainColor,
-                      ),
-                      borderRadius: BorderRadius.circular(25.r)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('assets/images/file.png'),
-                      Text(
-                        'ارفاق ملف',
-                        style: TextStyle(color: Colors.grey, fontSize: 18.sp),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: AuthButton(onTap: () {}, buttonText: 'تقدم الآن'),
-                )
-              ],
-            ),
-          ))
-        ],
-      ),
-    ));
+              Expanded(
+                  child: InAppWebView(
+                initialUrlRequest: URLRequest(url: Uri.parse(logic.urlLaunch)),
+                initialOptions: logic.options,
+                pullToRefreshController: logic.pullToRefreshController,
+                onLoadStop: (controller, url) async {
+                  logic.pullToRefreshController.endRefreshing();
+                  // setState(() {
+                  //   this.url = url.toString();
+                  //   urlController.text = this.url;
+                  // });
+                },
+
+                onLoadError: (controller, url, code, message) {
+                  logic.pullToRefreshController.endRefreshing();
+                },
+
+                onProgressChanged: logic.onProgress,
+                onWebViewCreated: (controller) {
+                  logic.controller = controller;
+                  controller.addWebMessageListener(WebMessageListener(
+                    jsObjectName: 'formio',
+                    onPostMessage:
+                        (message, sourceOrigin, isMainFrame, replyProxy) {
+                      print("From the JavaScript side:");
+                    },
+                  )
+                      // handlerName: "formio",
+                      // callback: (args) {
+                      //   // Here you receive all the arguments from the JavaScript side
+                      //   // that is a List<dynamic>
+                      //   print("From the JavaScript side:");
+                      //   print(args);
+                      //   return args.reduce((curr, next) => curr + next);
+                      );
+                },
+                onJsAlert: (controller, jsAlertRequest) async {
+                  print(jsAlertRequest.message);
+                  // Get.back();
+                  return JsAlertResponse(action: JsAlertResponseAction.CONFIRM);
+                },
+                // controller: logic.controller,
+              ))
+            ],
+          );
+        }));
   }
 }

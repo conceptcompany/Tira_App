@@ -30,6 +30,7 @@ class AuthController extends GetxController
       TextEditingController();
 
   final TextEditingController loginPhoneController = TextEditingController();
+  final TextEditingController sendPhoneController = TextEditingController();
   final TextEditingController loginPasswordController = TextEditingController();
 
   var isLogin = true.obs;
@@ -123,6 +124,38 @@ class AuthController extends GetxController
           // errorToast(model.message ?? '');
         }
       } catch (ex) {
+        String? appError = ErrorParser().parseError(ex);
+        errorToast(appError!);
+      }
+    } else {
+      errorToast("No Internet");
+    }
+  }
+
+  Future<void> sendSms(String phone) async {
+    bool isConnected = await _networkInfo.isConnected;
+    if (isConnected) {
+      try {
+        final model = await _baseAuthDataSource.sendSms(phone);
+        if (model.status == "success") {
+          Get.showSnackbar(GetSnackBar(
+            title: "التحقق من رقم الهاتف",
+            message: model.data,
+            margin: EdgeInsets.all(15),
+            backgroundColor: ColorManager.mainColor,
+            snackPosition: SnackPosition.TOP,
+            borderRadius: 15,
+            duration: Duration(seconds: 2),
+          ));
+
+          update();
+          Get.toNamed(AppRoutes.verifyOtp, arguments: sendPhoneController.text);
+          log('model=> ${model}');
+        } else {
+          // errorToast(model.message ?? '');
+        }
+      } catch (ex) {
+        Get.toNamed(AppRoutes.verifyOtp, arguments: sendPhoneController.text);
         String? appError = ErrorParser().parseError(ex);
         errorToast(appError!);
       }

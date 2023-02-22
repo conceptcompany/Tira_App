@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tira_app/core/resources/values_manager.dart';
-import 'package:tira_app/screens/navbar_pages/services/persentation/view/details_form.dart';
 
 import '../../../../../../core/resources/color_manager.dart';
+import '../../../../../core/helpers/date_converter.dart';
 import '../../../../../core/resources/strings_manager.dart';
+import '../../../../../core/routes/app_routes.dart';
+import '../../data/models/services_details_model.dart';
 
 class ServicesDetailsCard extends StatelessWidget {
-  const ServicesDetailsCard({super.key});
+  final ServicesDetails servicesDetails;
+  const ServicesDetailsCard({super.key, required this.servicesDetails});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class ServicesDetailsCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'تسجيل المواليد الجدد لشهر سبتمبر',
+                servicesDetails.formNameAr ?? '',
                 style: context.textTheme.bodyLarge,
               ),
               Icon(
@@ -48,7 +51,7 @@ class ServicesDetailsCard extends StatelessWidget {
                 width: AppSize.s5.w,
               ),
               Text(
-                'قبل 5 دقائق',
+                DateConverter.dateToString(servicesDetails.createdAt),
                 style: context.textTheme.headlineSmall,
               ),
             ],
@@ -61,7 +64,11 @@ class ServicesDetailsCard extends StatelessWidget {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                Get.to(() => const DetailsForm());
+                Get.toNamed(AppRoutes.servicesDetailsForm, arguments: [
+                  servicesDetails.formNameAr,
+                  servicesDetails.formNameHe,
+                  servicesDetails.formHtml
+                ]);
               },
               style: ElevatedButton.styleFrom(
                   fixedSize: Size(AppSize.s140.w, AppSize.s30.h),

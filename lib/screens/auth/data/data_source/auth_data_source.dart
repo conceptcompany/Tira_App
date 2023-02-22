@@ -4,11 +4,14 @@ import '../../../../core/network/api_constant.dart';
 import '../../../../core/network/web_connection.dart';
 import '../models/login_model.dart';
 import '../models/register_model.dart';
+import '../models/success_model.dart';
 
 abstract class BaseAuthDataSource {
   Future<RegisterModel> register(
       String phone, String idNumber, String email, String password);
   Future<LoginModel> login(String phoneOrId, String password);
+  Future<SuccessModel> sendSms(String phone);
+  Future<LoginModel> verifyOtp(String phone, String code);
 }
 
 class AuthDataSource implements BaseAuthDataSource {
@@ -42,6 +45,34 @@ class AuthDataSource implements BaseAuthDataSource {
         "phoneOrIdnumer": phoneOrId,
         "password": password,
       });
+      LoginModel loginModel = LoginModel.fromJson(response.data);
+      return loginModel;
+    } catch (ex) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<SuccessModel> sendSms(String phone) async {
+    try {
+      Response response = await _webServiceConnections
+          .postRequest(path: ApiConstant.sendSms, showLoader: false, data: {
+        "phone": phone,
+      });
+      SuccessModel successModel = SuccessModel.fromJson(response.data);
+      return successModel;
+    } catch (ex) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<LoginModel> verifyOtp(String phone, String code) async {
+    try {
+      Response response = await _webServiceConnections.postRequest(
+          path: ApiConstant.verifyOtp,
+          showLoader: false,
+          data: {"phone": phone, "otp": code});
       LoginModel loginModel = LoginModel.fromJson(response.data);
       return loginModel;
     } catch (ex) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:tira_app/core/resources/styles_manager.dart';
 import 'package:tira_app/core/resources/values_manager.dart';
 import 'package:tira_app/widgets/button.dart';
@@ -7,6 +8,7 @@ import 'package:tira_app/widgets/button.dart';
 import '../../../../core/resources/color_manager.dart';
 import '../../../../core/resources/font_manager.dart';
 import '../../../../core/resources/strings_manager.dart';
+import '../../../../core/routes/app_routes.dart';
 import '../../../../widgets/custom_text_field.dart';
 import '../controller/auth_controller.dart';
 
@@ -67,12 +69,17 @@ class LoginCon extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  AppStrings.forgetPass,
-                  style: getRegularStyle(
-                      color: hintColor,
-                      fontSize: FontSize.s14.sp,
-                      decoration: TextDecoration.underline),
+                InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.sendPhone);
+                  },
+                  child: Text(
+                    AppStrings.forgetPass,
+                    style: getRegularStyle(
+                        color: hintColor,
+                        fontSize: FontSize.s14.sp,
+                        decoration: TextDecoration.underline),
+                  ),
                 ),
               ],
             ),

@@ -7,6 +7,7 @@ import 'package:tira_app/screens/landing_page.dart';
 import 'package:tira_app/screens/splash_screen.dart';
 
 import '../../screens/auth/binding/auth_binding.dart';
+import '../../screens/auth/binding/verify_code_binding.dart';
 import '../../screens/navbar_pages/home/agenda/bindings/agenda_binding.dart';
 import '../../screens/navbar_pages/home/agenda/persentation/view/agenda.dart';
 import '../../screens/navbar_pages/home/citizen_service/persentation/view/citizen_service.dart';
@@ -18,6 +19,8 @@ import '../../screens/navbar_pages/home/polls/presentation/view/polls.dart';
 import '../../screens/navbar_pages/home/sections/presentation/view/sections.dart';
 import '../../screens/navbar_pages/home/show_ideas.dart';
 import '../../screens/navbar_pages/services/bindings/services_details_binding.dart';
+import '../../screens/navbar_pages/services/bindings/services_details_form_binding.dart';
+import '../../screens/navbar_pages/services/persentation/view/details_form.dart';
 import '../../screens/navbar_pages/services/persentation/view/servicesDetails.dart';
 import 'app_routes.dart';
 
@@ -36,8 +39,11 @@ class AppPages {
         name: AppRoutes.home,
         page: () => const LandingPage(),
         binding: HomeBinding()),
-    GetPage(name: AppRoutes.check1, page: () => const SendPhoneScreen()),
-    GetPage(name: AppRoutes.check2, page: () => const SendCodeScreen()),
+    GetPage(name: AppRoutes.sendPhone, page: () => SendPhoneScreen()),
+    GetPage(
+        name: AppRoutes.verifyOtp,
+        page: () => SendCodeScreen(),
+        binding: VerifyCodeBinding()),
     GetPage(name: AppRoutes.news, page: () => const NewsScreen()),
     GetPage(name: AppRoutes.formScreen, page: () => const Forms()),
     GetPage(name: AppRoutes.surveysScreen, page: () => const Polls()),
@@ -55,6 +61,10 @@ class AppPages {
         page: () => const ServicesDetails(),
         binding: ServicesDetailsBindings()),
     GetPage(name: AppRoutes.emergencyScreen, page: () => const Emergency()),
+    GetPage(
+        name: AppRoutes.servicesDetailsForm,
+        page: () => const ServicesDetailsFormScreen(),
+        binding: ServicesFormBinding()),
     GetPage(name: AppRoutes.showIdeasScreen, page: () => const ShowIdeas()),
   ];
 }

@@ -10,41 +10,58 @@ import 'package:tira_app/widgets/topBar.dart';
 
 import '../../../../core/resources/color_manager.dart';
 import '../../../../core/resources/strings_manager.dart';
-import '../../../../core/routes/app_routes.dart';
 import '../../../../widgets/custom_text_field.dart';
+import '../controller/auth_controller.dart';
 
 class SendPhoneScreen extends StatelessWidget {
-  const SendPhoneScreen({super.key});
-
+  SendPhoneScreen({super.key});
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return CustomTabBarWidget(
-        widget: AuthContainer(
-            padding: EdgeInsets.only(
-                left: 33.w, right: 33.w, bottom: 115.h, top: 87.h),
-            margin: EdgeInsets.only(top: AppSize.s10.h),
-            widget: Column(
-              children: [
-                Text(
-                  AppStrings.enterPhoneNumber,
-                  style: getRegularStyle(
-                      color: textFontColor, fontSize: FontSize.s18.sp),
+    return GetBuilder<AuthController>(builder: (logic) {
+      return CustomTabBarWidget(
+          widget: AuthContainer(
+              padding: EdgeInsets.only(
+                  left: 33.w, right: 33.w, bottom: 115.h, top: 87.h),
+              margin: EdgeInsets.only(top: AppSize.s10.h),
+              widget: Form(
+                autovalidateMode: AutovalidateMode.disabled,
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Text(
+                      AppStrings.enterPhoneNumber,
+                      style: getRegularStyle(
+                          color: textFontColor, fontSize: FontSize.s18.sp),
+                    ),
+                    CustomTextField(
+                      controller: logic.sendPhoneController,
+                      focusedBorderColor: hintColor,
+                      enabledBorderColor: hintColor,
+                      hintText: AppStrings.phoneNumber,
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == '') {
+                          return "قم بإدخال رقم الهاتف";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: AppSize.s79.h,
+                    ),
+                    AuthButton(
+                      buttonText: AppStrings.send,
+                      onTap: () {
+                        if (_formKey.currentState!.validate()) {
+                          logic.sendSms(logic.sendPhoneController.text);
+                        }
+                      },
+                    ),
+                  ],
                 ),
-                CustomTextField(
-                  focusedBorderColor: hintColor,
-                  enabledBorderColor: hintColor,
-                  hintText: AppStrings.phoneNumber,
-                ),
-                SizedBox(
-                  height: AppSize.s79.h,
-                ),
-                AuthButton(
-                  buttonText: AppStrings.send,
-                  onTap: () {
-                    Get.toNamed(AppRoutes.check2);
-                  },
-                ),
-              ],
-            )));
+              )));
+    });
   }
 }

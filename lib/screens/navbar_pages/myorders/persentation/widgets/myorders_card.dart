@@ -5,12 +5,14 @@ import 'package:get/get.dart';
 import 'package:tira_app/screens/navbar_pages/myorders/persentation/view/order_details.dart';
 
 import '../../../../../../core/resources/color_manager.dart';
+import '../../../../../core/helpers/date_converter.dart';
 import '../../../../../core/resources/assets_manager.dart';
 import '../../../../../core/resources/values_manager.dart';
+import '../../data/models/my_order_model.dart';
 
 class OrdersCard extends StatelessWidget {
-  const OrdersCard({super.key});
-
+  const OrdersCard({super.key, required this.myOrder});
+  final MyOrder myOrder;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +34,7 @@ class OrdersCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'تسجيل المواليد الجدد لشهر سبتمبر',
+                myOrder.form!.formNameAr ?? '',
                 style: context.textTheme.bodyLarge,
               ),
               Icon(
@@ -46,13 +48,14 @@ class OrdersCard extends StatelessWidget {
             children: [
               const Icon(Icons.calendar_month_outlined),
               Text(
-                'قبل 5 دقائق ',
+                DateConverter.dateWithTimeToString(myOrder.createdAt),
                 style: context.textTheme.headlineSmall,
               ),
             ],
           ),
           Text(
-            'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد ',
+            myOrder.form!.description ??
+                'هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد ',
             maxLines: 2,
             style: context.textTheme.bodyMedium,
           ),
@@ -81,17 +84,17 @@ class OrdersCard extends StatelessWidget {
             children: [
               SvgPicture.asset(ImageAssets.requsetIcon),
               Text(
-                'رقم الطلب: 5',
+                'رقم الطلب: ${myOrder.id}',
                 style: context.textTheme.bodySmall,
               ),
               SvgPicture.asset(ImageAssets.requsetStatusIcon),
               Text(
-                'حالة الطلب: جديد',
+                'حالة الطلب: ${myOrder.statusorder!.statusTitle ?? ''}',
                 style: context.textTheme.bodySmall,
               ),
               SvgPicture.asset(ImageAssets.calendarDateIcon),
               Text(
-                'تاريخ التقديم: 3-8-2022',
+                'تاريخ التقديم: ${DateConverter.dateToString(myOrder.createdAt)}',
                 style: context.textTheme.bodySmall,
               ),
             ],
